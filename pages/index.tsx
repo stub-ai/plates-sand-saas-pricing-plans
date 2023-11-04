@@ -1,35 +1,17 @@
-import Image from 'next/image'
-import { Inter } from 'next/font/google'
+import { useEffect, useState } from 'react';
 import PricingCard from '../components/PricingCard'
 
-const inter = Inter({ subsets: ['latin'] })
-
-const plans = [
-  {
-    name: 'Basic',
-    features: ['1 GB Storage', '10 GB Bandwidth', '24/7 Support'],
-    price: '$10/month',
-    annualPrice: '$100/year'
-  },
-  {
-    name: 'Premium',
-    features: ['10 GB Storage', '100 GB Bandwidth', '24/7 Support'],
-    price: '$20/month',
-    annualPrice: '$200/year'
-  },
-  {
-    name: 'Ultimate',
-    features: ['Unlimited Storage', 'Unlimited Bandwidth', '24/7 Support'],
-    price: '$30/month',
-    annualPrice: '$300/year'
-  }
-]
-
 export default function Home() {
+  const [plans, setPlans] = useState([]);
+
+  useEffect(() => {
+    fetch('/api/pricing')
+      .then(response => response.json())
+      .then(data => setPlans(data));
+  }, []);
+
   return (
-    <main
-      className={`flex min-h-screen flex-col items-center justify-between p-24 ${inter.className}`}
-    >
+    <main className="flex min-h-screen flex-col items-center justify-between p-24">
       <h1 className="text-4xl font-bold mb-10">Our Plans</h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {plans.map((plan, index) => (
