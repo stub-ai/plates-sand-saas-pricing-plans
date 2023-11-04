@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { z } from 'zod';
 
 const ContactUsForm: React.FC = () => {
   const [name, setName] = useState('');
@@ -6,6 +7,12 @@ const ContactUsForm: React.FC = () => {
   const [date, setDate] = useState('');
   const [message, setMessage] = useState('');
   const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState('');
+
+  const schema = z.object({
+    name: z.string().regex(/^[A-Za-z]+$/),
+    email: z.string().email(),
+  });
 
   const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setName(event.target.value);
@@ -25,16 +32,23 @@ const ContactUsForm: React.FC = () => {
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    const response = await fetch('/api/contact', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ name, email, date, message }),
-    });
+    try {
+      schema.parse({ name, email });
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ name, email, date, message }),
+      });
 
-    if (response.ok) {
-      setSubmitted(true);
+      if (response.ok) {
+        setSubmitted(true);
+      }
+    } catch (err) {
+      if (err instanceof Error) {
+        setError(err.message);
+      }
     }
   };
 
@@ -50,6 +64,7 @@ const ContactUsForm: React.FC = () => {
   return (
     <form onSubmit={handleSubmit} className="flex flex-col items-center justify-center bg-gradient-to-r from-blue-500 to-green-500 shadow-md rounded-lg p-6 hover:shadow-lg transition-shadow duration-300">
       <h2 className="text-2xl font-bold mb-4 text-white">Contact Us</h2>
+      {error && <p className="text-red-500">{error}</p>}
       <div className="flex flex-col items-center mb-4 w-full">
         <label htmlFor="name" className="mb-2 text-white">Name</label>
         <input type="text" id="name" value={name} onChange={handleNameChange} className="border-2 border-gray-200 rounded-md p-1 w-64" required />
