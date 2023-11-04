@@ -46,8 +46,8 @@ const ContactUsForm: React.FC = () => {
         setSubmitted(true);
       }
     } catch (err) {
-      if (err instanceof Error) {
-        setError(err.message);
+      if (err instanceof z.ZodError) {
+        setError("Please enter a valid name and email.");
       }
     }
   };
