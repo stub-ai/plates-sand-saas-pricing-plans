@@ -5,6 +5,7 @@ const ContactUsForm: React.FC = () => {
   const [email, setEmail] = useState('');
   const [date, setDate] = useState('');
   const [message, setMessage] = useState('');
+  const [submitted, setSubmitted] = useState(false);
 
   const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setName(event.target.value);
@@ -22,11 +23,29 @@ const ContactUsForm: React.FC = () => {
     setMessage(event.target.value);
   };
 
-  const handleSubmit = (event: React.FormEvent) => {
+  const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    // Handle form submission here
-    console.log(`Name: ${name}, Email: ${email}, Date: ${date}, Message: ${message}`);
+    const response = await fetch('/api/contact', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ name, email, date, message }),
+    });
+
+    if (response.ok) {
+      setSubmitted(true);
+    }
   };
+
+  if (submitted) {
+    return (
+      <div className="flex flex-col items-center justify-center bg-gradient-to-r from-blue-500 to-green-500 shadow-md rounded-lg p-6 hover:shadow-lg transition-shadow duration-300">
+        <h2 className="text-2xl font-bold mb-4 text-white">Thank you for contacting us!</h2>
+        <p className="text-white">We will get back to you soon.</p>
+      </div>
+    );
+  }
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col items-center justify-center bg-gradient-to-r from-blue-500 to-green-500 shadow-md rounded-lg p-6 hover:shadow-lg transition-shadow duration-300">
