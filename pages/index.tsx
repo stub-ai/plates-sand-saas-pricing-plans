@@ -14,7 +14,7 @@ export default function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
       <h1 className="text-4xl font-bold mb-10">Our Plans</h1>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
         {plans.map((plan, index) => (
           <PricingCard key={index} plan={plan} />
         ))}
