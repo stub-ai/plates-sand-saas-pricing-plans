@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
-import PricingCard from '../components/PricingCard'
+import PricingCard from '../components/PricingCard';
+import ContactUsForm from '../components/ContactUsForm';
 
 export default function Home() {
   const [plans, setPlans] = useState([]);
@@ -18,6 +19,7 @@ export default function Home() {
           <PricingCard key={index} plan={plan} />
         ))}
       </div>
+      <ContactUsForm />
     </main>
   )
 }
