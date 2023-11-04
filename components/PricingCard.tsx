@@ -37,12 +37,12 @@ const PricingCard: React.FC<PricingCardProps> = ({ plan }) => {
         ))}
       </ul>
       <div className="flex items-center mb-4">
-        <label htmlFor="annual" className="mr-2">Annual</label>
-        <input type="checkbox" id="annual" checked={isAnnual} onChange={toggleAnnual} className="cursor-pointer" />
+        <label htmlFor="annual" className="mr-2 text-gray-700">Annual</label>
+        <input type="checkbox" id="annual" checked={isAnnual} onChange={toggleAnnual} className="cursor-pointer form-checkbox h-5 w-5 text-blue-600" />
       </div>
       <div className="flex items-center mb-4">
-        <label htmlFor="users" className="mr-2">Users</label>
-        <input type="number" id="users" value={users} onChange={handleUsersChange} min="1" className="border-2 border-gray-200 rounded-md p-1" />
+        <label htmlFor="users" className="mr-2 text-gray-700">Users</label>
+        <input type="number" id="users" value={users} onChange={handleUsersChange} min="1" className="border-2 border-gray-200 rounded-md p-1 w-16 text-center" />
       </div>
       <p className="text-xl font-bold mb-4">${total.toFixed(2)}/month</p>
       <button className="bg-blue-500 text-white rounded-lg px-6 py-2 hover:bg-blue-600 transition-colors duration-300">Sign Up</button>
