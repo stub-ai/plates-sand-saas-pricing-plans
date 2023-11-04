@@ -9,9 +9,11 @@ interface Plan {
 
 interface PricingCardProps {
   plan: Plan;
+  selectedPlan: string;
+  setSelectedPlan: (planName: string) => void;
 }
 
-const PricingCard: React.FC<PricingCardProps> = ({ plan }) => {
+const PricingCard: React.FC<PricingCardProps> = ({ plan, selectedPlan, setSelectedPlan }) => {
   const [isAnnual, setIsAnnual] = useState(false);
   const [users, setUsers] = useState(1);
 
@@ -26,8 +28,23 @@ const PricingCard: React.FC<PricingCardProps> = ({ plan }) => {
   const price = isAnnual ? plan.annualPrice : plan.price;
   const total = Number(price.replace(/[^0-9.-]+/g,"")) * users;
 
+  const handleSignUp = async () => {
+    setSelectedPlan(plan.name);
+    const response = await fetch('/api/signup', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ plan: plan.name, users, isAnnual }),
+    });
+
+    if (!response.ok) {
+      // Handle error
+    }
+  };
+
   return (
-    <div className="flex flex-col items-center justify-center bg-white shadow-md rounded-lg p-6 hover:shadow-lg transition-shadow duration-300">
+    <div className={`flex flex-col items-center justify-center bg-white shadow-md rounded-lg p-6 hover:shadow-lg transition-shadow duration-300 ${selectedPlan === plan.name ? 'border-4 border-blue-500' : ''}`}>
       <h2 className="text-2xl font-bold mb-4">{plan.name}</h2>
       <ul className="mb-4">
         {plan.features.map((feature, index) => (
@@ -45,7 +62,7 @@ const PricingCard: React.FC<PricingCardProps> = ({ plan }) => {
         <input type="number" id="users" value={users} onChange={handleUsersChange} min="1" className="border-2 border-gray-200 rounded-md p-1 w-16 text-center" />
       </div>
       <p className="text-xl font-bold mb-4">${total.toFixed(2)}/month</p>
-      <button className="bg-blue-500 text-white rounded-lg px-6 py-2 hover:bg-blue-600 transition-colors duration-300">Sign Up</button>
+      <button onClick={handleSignUp} className="bg-blue-500 text-white rounded-lg px-6 py-2 hover:bg-blue-600 transition-colors duration-300">Sign Up</button>
     </div>
   );
 };
