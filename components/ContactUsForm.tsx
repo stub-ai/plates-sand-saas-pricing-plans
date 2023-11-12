@@ -10,9 +10,9 @@ const ContactUsForm: React.FC = () => {
   const [error, setError] = useState('');
 
   const schema = z.object({
-    name: z.string().regex(/^[A-Za-z]+$/),
-    email: z.string().email(),
-    date: z.string(),
+    name: z.string().nonempty({ message: 'Name is required' }).regex(/^[A-Za-z]+$/, { message: 'Name should only contain alphabetical characters' }),
+    email: z.string().nonempty({ message: 'Email is required' }).email({ message: 'Invalid email format' }),
+    date: z.string().nonempty({ message: 'Date is required' }),
     message: z.string().optional(),
   });
 
@@ -49,7 +49,7 @@ const ContactUsForm: React.FC = () => {
       }
     } catch (err) {
       if (err instanceof z.ZodError) {
-        setError("Please enter a valid name, email and date.");
+        setError(err.errors[0].message);
       }
     }
   };
