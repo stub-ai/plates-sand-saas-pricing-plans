@@ -12,6 +12,8 @@ const ContactUsForm: React.FC = () => {
   const schema = z.object({
     name: z.string().regex(/^[A-Za-z]+$/),
     email: z.string().email(),
+    date: z.string(),
+    message: z.string().optional(),
   });
 
   const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -33,7 +35,7 @@ const ContactUsForm: React.FC = () => {
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     try {
-      schema.parse({ name, email });
+      schema.parse({ name, email, date, message });
       const response = await fetch('/api/contact', {
         method: 'POST',
         headers: {
@@ -47,7 +49,7 @@ const ContactUsForm: React.FC = () => {
       }
     } catch (err) {
       if (err instanceof z.ZodError) {
-        setError("Please enter a valid name and email.");
+        setError("Please enter a valid name, email and date.");
       }
     }
   };

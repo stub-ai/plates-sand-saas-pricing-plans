@@ -20,7 +20,9 @@ export default function Home() {
           <PricingCard key={index} plan={plan} selectedPlan={selectedPlan} setSelectedPlan={setSelectedPlan} />
         ))}
       </div>
-      <ContactUsForm />
+      <div className="mb-10">
+        <ContactUsForm />
+      </div>
     </main>
   )
 }
