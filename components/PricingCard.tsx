@@ -62,7 +62,7 @@ const PricingCard: React.FC<PricingCardProps> = ({ plan, selectedPlan, setSelect
         <input type="number" id="users" value={users} onChange={handleUsersChange} min="1" className="border-2 border-gray-200 rounded-md p-1 w-16 text-center" />
       </div>
       <p className="text-xl font-bold mb-4">${total.toFixed(2)}/month</p>
-      <button onClick={handleSignUp} className="bg-blue-500 text-white rounded-lg px-6 py-2 hover:bg-blue-600 transition-colors duration-300">Sign Up</button>
+      <button onClick={handleSignUp} className={`bg-blue-500 text-white rounded-lg px-6 py-2 hover:bg-blue-600 transition-colors duration-300 ${selectedPlan === plan.name ? 'ring-4 ring-blue-500' : ''}`}>Sign Up</button>
     </div>
   );
 };
